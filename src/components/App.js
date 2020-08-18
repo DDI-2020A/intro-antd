@@ -3,11 +3,15 @@ import '../styles/App.css';
 import UserInfo from './UserInfo';
 import UserTaskList from './UserTaskList';
 import UserTaskForm from './UserTaskForm';
+import { Button, message, Modal } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 function App() {
   const [ list, setList ] = useState( [] );
   const [ userId, setUserId ] = useState( 1 );
   const [ userData, setUserData ] = useState( null );
+  const [ isLoading, setIsLoading ] = useState( true );
+  const [ createTaskModalVisible, setCreateTaskModalVisible ] = useState( false );
 
   useEffect( () => {
     const getUser = async() => {
@@ -25,8 +29,8 @@ function App() {
       console.log( 'list', jsonList );
 
       setList( jsonList );
+      setIsLoading( false );
     };
-
     getList();
   }, [ userId ] );
 
@@ -53,6 +57,7 @@ function App() {
       listUpdated[ index ].completed = true;
       return listUpdated;
     } );
+    message.success( 'Felicitaciones, has completado tu tarea! :)' );
   };
 
 
@@ -68,15 +73,41 @@ function App() {
     <>
       {
         userId > 1 &&
-        <button onClick={ handlePrevUser }>Anterior usuario</button>
+        <Button type='primary' icon={ <LeftOutlined /> } onClick={ handlePrevUser }>Anterior usuario</Button>
       }
       {
         userId < 10 &&
-        <button onClick={ handleNextUser }>Siguiente usuario</button>
+        <Button type='primary'
+                onClick={ handleNextUser }>
+          Siguiente usuario <RightOutlined />
+        </Button>
       }
       <UserInfo userData={ userData } />
-      <UserTaskForm onAddTask={ handleAddTask } />
-      <UserTaskList list={ list } onCompleteTask={ handleCompleteTask } onDeleteTask={ handleDeleteTask } />
+
+      <Button type='primary'
+              onClick={ () => setCreateTaskModalVisible( true ) }>
+        Crear una nueva tarea
+      </Button>
+
+      <Button danger
+              onClick={ () => setList( [] ) }>
+        Eliminar todas las tareas
+      </Button>
+      <Modal
+        title='Crea una nueva tarea'
+        visible={ createTaskModalVisible }
+        onOk={ () => setCreateTaskModalVisible( false ) }
+        onCancel={ () => setCreateTaskModalVisible( false ) }
+        footer={ null }
+      >
+        <UserTaskForm onAddTask={ handleAddTask } />
+      </Modal>
+
+      <UserTaskList list={ list }
+                    onAddTask={ handleAddTask }
+                    onCompleteTask={ handleCompleteTask }
+                    onDeleteTask={ handleDeleteTask }
+                    isLoading={ isLoading } />
     </>
   );
 }

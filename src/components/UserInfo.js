@@ -2,19 +2,19 @@
  * Created by chalosalvador on 8/18/20
  */
 import React from 'react';
+import { Descriptions } from 'antd';
 
 const UserInfo = ( { userData } ) => (
   userData
     ?
     <>
-      <h1>Información del usuario</h1>
-      <ul>
-        <li><strong>Nombre: </strong> { userData.name }</li>
-        <li><strong>Usuario: </strong> { userData.username }</li>
-        <li><strong>Email: </strong> { userData.email }</li>
-        <li><strong>Web: </strong> { userData.website }</li>
-        <li><strong>Teléfono: </strong> { userData.phone }</li>
-      </ul>
+      <Descriptions title='Información del usuario'>
+        <Descriptions.Item label='Nombre'>{ userData.name }</Descriptions.Item>
+        <Descriptions.Item label='Usuario'>{ userData.username }</Descriptions.Item>
+        <Descriptions.Item label='Email'>{ userData.email }</Descriptions.Item>
+        <Descriptions.Item label='Web'>{ userData.web }</Descriptions.Item>
+        <Descriptions.Item label='Teléfono'>{ userData.phone }</Descriptions.Item>
+      </Descriptions>
     </>
     : 'Cargando...'
 );

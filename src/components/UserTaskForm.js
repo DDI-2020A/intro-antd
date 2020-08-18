@@ -1,4 +1,7 @@
 import React from 'react';
+import { Button, Input } from 'antd';
+import { UnorderedListOutlined, PlusOutlined } from '@ant-design/icons';
+
 
 /**
  * Created by chalosalvador on 8/18/20
@@ -6,10 +9,8 @@ import React from 'react';
 
 const UserTaskForm = ( { onAddTask } ) => (
   <div>
-    <label htmlFor='task'>Tarea</label>
-    <input type='text' id='task' />
-
-    <button onClick={ onAddTask }>Agregar tarea</button>
+    <Input style={{width: 350}} size='large' id='task' placeholder='Ingrese el nombre de la tarea' prefix={ <UnorderedListOutlined /> } />
+    <Button type='primary' onClick={ onAddTask } icon={<PlusOutlined />} />
   </div>
 );
 
